@@ -4,7 +4,6 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
-
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -14,6 +13,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+
+//Spring Boot Overriding
+ext['hibernate.version'] = '5.2.11.Final'
 
 repositories {
 	mavenCentral()
