@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>스프링부트 웹서비스</title>
+    <meta charset="UTF-8" />
+
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+</head>
+<body>
+    <h1>스프링부트로 시작하는 웹 서비스</h1>
+    <div class="col-md-12">
+        <br/>
+        <br/>
+        <br/>
+        <!-- 목록 출력 영역 -->
+        <table class="table table-horizontal table-bordered">
+            <thead class="thead-strong">
+                <tr>
+                    <th>게시글번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>최종수정일</th>
+                </tr>
+            </thead>
+            <tbody>
+	        	<tr th:if="${#lists.size(posts)} > 0" th:each="posts : ${posts}">    
+	        	<!-- 조회된 데이터가 한 개 이상일 때 / ${list}이건 컨트롤러에서 mv객체에 받아온거 -->
+	        	<!-- foreach구문처럼 반복해서 없을 때까지 가져온다. -->
+	        	<!-- list변수는 each가 선언된 tr태그 내에서만 사용가능하다. -->
+	        		<td th:text="${posts.id}"></td>
+	        		<td th:text="${posts.title}"></td>
+	        		<td th:text="${posts.author}"></td>
+	        		<td th:text="${posts.modifiedDate}"></td>
+	        	</tr> 
+	        	<tr th:unless="${#lists.size(posts)} > 0">      <!-- 조회된 데이터가 없을 때 -->
+	        		<td colspan="4">조회된 결과가 없습니다.</td>
+	        	</tr>
+	        </tbody>
+        </table>
+    </div>
+
+    <!-- Modal 영역 -->
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#savePostsModal">글 등록</button>
+    </div>
+
+    <div class="modal fade" id="savePostsModal" tabindex="-1" role="dialog" aria-labelledby="savePostsLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="savePostsLabel">게시글 등록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="frm" method="post">
+                        <div class="form-group">
+                            <label for="title">제목</label>
+                            <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="author"> 작성자 </label>
+                            <input type="text" class="form-control" id="author" placeholder="작성자를 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="content"> 내용 </label>
+                            <textarea class="form-control" id="content" placeholder="내용을 입력하세요"></textarea>
+                        </div>
+                        <input type="hidden" id="method" name="_method"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="btn-save">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--부트스트랩 js, jquery 추가-->
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    
+    <!--custom js 추가-->
+    <script src="/js/app/main.js"></script>
+</body>
+</html>

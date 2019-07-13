@@ -1,12 +1,17 @@
 package com.example.webservice.web;
 
+import java.util.List;
+
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.example.webservice.domain.posts.PostsRepository;
 import com.example.webservice.domain.posts.PostsSaveRequestDto;
+import com.example.webservice.dto.PostsMainResponseDto;
+import com.example.webservice.service.PostsService;
 
 import lombok.AllArgsConstructor;
 
@@ -14,7 +19,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class WebRestController {
 	
-	private PostsRepository postsRepository;
+	private PostsService postsService;
+	
+	@GetMapping("/main")
+    public ModelAndView main(Model model) {
+		ModelAndView mv = new ModelAndView("/main");
+		List<PostsMainResponseDto> posts = postsService.findAllDesc();
+		mv.addObject("posts", posts);
+        return mv;
+    }
 	
 	@GetMapping("/hello")
     public String hello() {
@@ -23,8 +36,14 @@ public class WebRestController {
 	
 	@PostMapping("/posts")
 	public void savePosts(@RequestBody PostsSaveRequestDto dto) {
-		postsRepository.save(dto.toEntity());
+		postsService.save(dto);
 	}
+	
+//	@PostMapping("/posts")
+//	public Long savePosts(@RequestBody PostsSaveRequestDto dto) {
+//		// 클라이언트의 request를 받아와서 파라미터로 쓸 때는 꼭 dto로 받아와줘야한다. (entity쓰면 안됨)
+//		return postsService.save(dto);
+//	}
 }
 
 
